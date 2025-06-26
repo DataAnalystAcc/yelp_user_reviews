@@ -64,9 +64,9 @@ Environment Variables: Managed via .env and python-dotenv
 
 👥 Author Info and Contact
 
-Maria Badanova – badanovamaria1@gmail.com
+Maria Badanova | [LinkedIn](https://www.linkedin.com/in/maria-badanova/)
 
-Maximilian Wels – maximilian.wels91@gmail.com
+Maximilian Wels | [LinkedIn](https://www.linkedin.com/in/maximilian-wels-76025810b/)
 
 🔗 Link to Presentation
 
