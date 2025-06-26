@@ -1,0 +1,445 @@
+-- Calculate outliers based on IQR for Business_raw File
+-- Review count
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY review_count) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY review_count) AS Q3
+    FROM business_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+    b.business_id,
+    b.name,
+    b.review_count,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    business_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b.review_count < i.lower_bound
+    OR b.review_count > i.upper_bound;
+
+_________________________________________________
+-- stars column
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY stars) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY stars) AS Q3
+    FROM business_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+    b.business_id,
+    b.name,
+    b.stars,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    business_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b.stars < i.lower_bound
+    OR b.stars > i.upper_bound;
+
+_________________________________________________________________________
+--checkin file not possible
+________________________________________________________________________
+--review_raw file
+--stars
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY stars) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY stars) AS Q3
+    FROM review_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+	b.user_id,
+    b.business_id,
+    b.stars,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    review_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b.stars < i.lower_bound
+    OR b.stars > i.upper_bound;
+_______________________________________________________________________________________
+-- review_raw file
+-- useful
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY useful) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY useful) AS Q3
+    FROM review_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+	b.user_id,
+    b.business_id,
+    b.useful,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    review_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b.useful < i.lower_bound
+    OR b.useful > i.upper_bound;
+_____________________________________________________________
+_______________________________________________________________________________________
+-- review_raw file
+-- funny
+
+WITH filtered_data_funny AS (
+    SELECT funny AS value_col, user_id
+    FROM review_raw
+    WHERE funny > 0 
+),
+quartiles_funny AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY value_col) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY value_col) AS Q3
+    FROM filtered_data_funny
+),
+iqr_calc_funny AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles_funny
+)
+SELECT
+    fd.user_id,
+    'funny' AS column_name,
+    fd.value_col AS value,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    filtered_data_funny fd
+CROSS JOIN iqr_calc_funny i
+WHERE
+    fd.value_col < i.lower_bound
+    OR fd.value_col > i.upper_bound;
+
+__________________________________________________
+
+-- cool
+
+WITH filtered_data_cool AS (
+    SELECT cool AS value_col, user_id
+    FROM review_raw
+    WHERE cool > 0 
+),
+quartiles_funny AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY value_col) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY value_col) AS Q3
+    FROM filtered_data_cool
+),
+iqr_calc_cool AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles_cool
+)
+SELECT
+    fd.user_id,
+    'cool' AS column_name,
+    fd.value_col AS value,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    filtered_data_cool fd
+CROSS JOIN iqr_calc_cool i
+WHERE
+    fd.value_col < i.lower_bound
+    OR fd.value_col > i.upper_bound;
+__________________________________
+_____________________________________________________________
+-- tips_clean file 
+-- compliment_count
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY compliment_count) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY compliment_count) AS Q3
+    FROM tip_clean
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+    b.compliment_count,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    tip_clean b
+    CROSS JOIN iqr_calc i
+WHERE
+    b.compliment_count < i.lower_bound
+    OR b.compliment_count > i.upper_bound;
+_____________________________________________________________
+-- user_raw file 
+-- review_count
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY review_count) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY review_count) AS Q3
+    FROM user_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+    b.user_id,
+    b.review_count,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    user_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b.review_count < i.lower_bound
+    OR b.review_count > i.upper_bound;
+_____________________________________________________________
+-- user_raw file 
+-- useful
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY useful) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY useful) AS Q3
+    FROM user_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+    b.user_id,
+    b.useful,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    user_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b.useful < i.lower_bound
+    OR b.useful > i.upper_bound;
+_____________________________________________________________
+-- user_raw file 
+-- funny
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY funny) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY funny) AS Q3
+    FROM user_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+    b.user_id,
+    b. funny,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    user_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b.funny < i.lower_bound
+    OR b.funny > i.upper_bound;
+_____________________________________________________________
+-- user_raw file 
+-- cool
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY cool) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY cool) AS Q3
+    FROM user_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+    b.user_id,
+    b. cool,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    user_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b. cool < i.lower_bound
+    OR b.cool > i.upper_bound;
+_____________________________________________________________
+-- user_raw file 
+-- cool
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY fans) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY fans) AS Q3
+    FROM user_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+    b.user_id,
+    b. fans,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    user_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b. fans < i.lower_bound
+    OR b.fans > i.upper_bound;
+_____________________________________________________________
+-- user_raw file 
+-- average_stars
+
+WITH quartiles AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY average_stars) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY average_stars) AS Q3
+    FROM user_raw
+),
+iqr_calc AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles
+)
+SELECT
+    b.user_id,
+    b. average_stars,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    user_raw b
+    CROSS JOIN iqr_calc i
+WHERE
+    b. average_stars < i.lower_bound
+    OR b.average_stars > i.upper_bound;
+______________________________
+-- user_raw file
+-- fans
+WITH filtered_data_fans AS (
+    SELECT fans AS value_col, user_id
+    FROM user_raw
+    WHERE fans > 0 -- Adjust this filter if 0 is a meaningful value for fans
+),
+quartiles_fans AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY value_col) AS Q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY value_col) AS Q3
+    FROM filtered_data_fans
+),
+iqr_calc_fans AS (
+    SELECT
+        Q1,
+        Q3,
+        (Q3 - Q1) AS IQR,
+        (Q1 - 1.5 * (Q3 - Q1)) AS lower_bound,
+        (Q3 + 1.5 * (Q3 - Q1)) AS upper_bound
+    FROM quartiles_fans
+)
+SELECT
+    fd.user_id,
+    'fans' AS column_name,
+    fd.value_col AS value,
+    i.lower_bound,
+    i.upper_bound
+FROM
+    filtered_data_fans fd
+CROSS JOIN iqr_calc_fans i
+WHERE
+    fd.value_col < i.lower_bound
+    OR fd.value_col > i.upper_bound;
