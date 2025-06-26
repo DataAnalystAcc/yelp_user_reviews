@@ -1,0 +1,200 @@
+CREATE TABLE capstone_yelp.review_5_star AS
+SELECT *
+FROM capstone_yelp.review_raw
+WHERE stars = 5;
+
+
+CREATE TABLE review_2019_clean AS
+WITH duplicates AS (
+  SELECT text
+  FROM review_2019
+  GROUP BY text
+  HAVING COUNT(*) = 1
+)
+SELECT r.*
+FROM review_2019 AS r
+JOIN duplicates USING (text);
+
+
+
+CREATE TABLE merged_sentiment_analysis AS
+SELECT 
+    b.business_id,
+    b.name,
+    b.city,
+    b.state,
+    b.postal_code,
+    b.latitude,
+    b.longitude,
+    b.stars AS business_stars,
+    b.review_count,
+    b.is_open,
+    b.categories,
+    b.key_category,
+    r.review_id,
+    r.text,
+    r.topic,
+    r.probability,
+    r.sentiment_label,
+    r.sentiment_score
+FROM 
+    business_clean b
+JOIN 
+    bertopic_analysis_results_update_2 r
+ON 
+    b.business_id = r.business_id;
+
+
+
+CREATE TABLE bertopic_analysis_results_update_2_copy AS
+SELECT * FROM bertopic_analysis_results_update_2;
+
+CREATE TABLE null_sentiments_copy AS
+SELECT * FROM null_sentiments;
+
+CREATE TABLE null_sentiments_2_copy AS
+SELECT * FROM null_sentiments_2;
+
+
+DELETE FROM capstone_yelp.bertopic_analysis_results_update_2_copy
+WHERE sentiment_score IS NULL OR sentiment_label IS NULL;
+
+DELETE FROM capstone_yelp.null_sentiments_copy
+WHERE sentiment_score IS NULL OR sentiment_label IS NULL;
+
+DELETE FROM capstone_yelp.null_sentiments_2_copy
+WHERE sentiment_score IS NULL OR sentiment_label IS NULL;
+
+
+CREATE TABLE capstone_yelp.sentiment_analysis_2019 AS
+SELECT * FROM capstone_yelp.bertopic_analysis_results_update_2_copy
+UNION ALL
+SELECT * FROM capstone_yelp.null_sentiments_copy
+UNIoN ALL
+SELECT * FROM capstone_yelp.null_sentiments_2_copy;
+
+
+SELECT *
+FROM final_table_3
+WHERE sentiment_score < 0.5 OR probability < 0.5;
+
+SELECT *
+FROM final_table_2
+WHERE sentiment_score > 0.5 AND probability < 0.5;
+
+
+WITH sentiment_counts AS (
+    SELECT 
+        topic,
+        sentiment_label,
+        COUNT(*) AS count
+    FROM final_table_3
+    WHERE topic NOT IN (0, 1)
+    GROUP BY topic, sentiment_label
+),
+topic_totals AS (
+    SELECT 
+        topic,
+        SUM(count) AS total_count
+    FROM sentiment_counts
+    GROUP BY topic
+),
+sentiment_percentages AS (
+    SELECT 
+        sc.topic,
+        sc.sentiment_label,
+        sc.count,
+        tt.total_count,
+        100.0 * sc.count / tt.total_count AS percentage
+    FROM sentiment_counts sc
+    JOIN topic_totals tt ON sc.topic = tt.topic
+),
+high_dominance AS (
+    SELECT *
+    FROM sentiment_percentages
+    WHERE percentage >= 90
+),
+ranked AS (
+    SELECT *,
+           ROW_NUMBER() OVER (PARTITION BY sentiment_label ORDER BY count DESC) AS rnk
+    FROM high_dominance
+)
+SELECT topic, sentiment_label, count, total_count, percentage
+FROM ranked
+WHERE rnk <= 5;
+
+
+CREATE TABLE table_90_Metro AS
+WITH sentiment_counts AS (
+    SELECT 
+        topic,
+        sentiment_label,
+        COUNT(*) AS count
+    FROM final_table_3
+    WHERE topic NOT IN (0, 1)
+    GROUP BY topic, sentiment_label
+),
+topic_totals AS (
+    SELECT 
+        topic,
+        SUM(count) AS total_count
+    FROM sentiment_counts
+    GROUP BY topic
+),
+sentiment_percentages AS (
+    SELECT 
+        sc.topic,
+        sc.sentiment_label,
+        sc.count,
+        tt.total_count,
+        100.0 * sc.count / tt.total_count AS percentage
+    FROM sentiment_counts sc
+    JOIN topic_totals tt ON sc.topic = tt.topic
+),
+high_dominance AS (
+    SELECT *
+    FROM sentiment_percentages
+    WHERE percentage >= 90
+),
+ranked AS (
+    SELECT *,
+           ROW_NUMBER() OVER (PARTITION BY sentiment_label ORDER BY count DESC) AS rnk
+    FROM high_dominance
+)
+SELECT topic, sentiment_label, count, total_count, percentage
+FROM ranked
+WHERE rnk <= 5;
+
+
+
+DROP TABLE IF EXISTS table_metro_key;
+
+
+CREATE TABLE table_metro_key AS
+SELECT 
+    topic,
+    topic_name,
+    metro AS category,
+    NULL AS key_category,
+    count,
+    percentage
+FROM table_test_3
+UNION ALL
+SELECT 
+    topic,
+    topic_name,
+    NULL AS metro,
+    key_category,
+    count,
+    percentage
+FROM table_test_4;
+
+CREATE TABLE table_key_metro_2 AS
+SELECT 
+    topic,
+    topic_name,
+    category AS metro,         -- Rename 'category' to 'metro'
+    key_category,
+    count,
+    percentage
+FROM table_metro_key;
