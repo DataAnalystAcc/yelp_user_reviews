@@ -37,11 +37,11 @@ from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
 from transformers import pipeline
 
-# Load custom embedding model
+Load custom embedding model
 embedding_model = SentenceTransformer("intfloat/e5-large-v2")
 topic_model = BERTopic(embedding_model=embedding_model)
 
-# Load sentiment analysis pipeline
+Load sentiment analysis pipeline
 sentiment = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")
 
 📊 Example Results or Screenshots
