@@ -1,10 +1,6 @@
 # yelp_user_reviews
 
-yelp_user_reviews
-
-📝 Project Title and Description
-
-User reviews as market signals: What's the next best business opportunity?
+📝 **User reviews as market signals: What's the next best business opportunity?**
 
 This project analyzes Yelp user reviews to uncover valuable business insights using state-of-the-art NLP techniques.
 It combines BERTopic for topic modeling and RoBERTa for sentiment analysis to identify the most discussed themes and emotional tones in customer feedback.
