@@ -1,0 +1,45 @@
+SELECT business_id, user_id, text, date, compliment_count, COUNT(*) as duplicate_count
+FROM tip_raw
+GROUP BY business_id, user_id, text,date, compliment_count
+HAVING COUNT(*) > 1;
+
+
+SELECT SUM(duplicate_count) AS total_duplicates
+FROM (
+    SELECT business_id, user_id, text, date, compliment_count, COUNT(*) as duplicate_count
+    FROM tip_raw
+    GROUP BY business_id, user_id, text, date, compliment_count
+    HAVING COUNT(*) > 1
+) AS duplicates;
+
+SELECT user_id, business_id, review_id, "text", COUNT(*) as duplicate_count
+FROM review_raw
+GROUP BY user_id, business_id, review_raw.review_id, review_raw.text
+HAVING COUNT(*) > 1;
+
+SELECT *
+FROM (
+    SELECT *,
+           COUNT(*) OVER (
+               PARTITION BY text
+           ) AS duplicate_count
+    FROM review_raw
+) AS sub
+WHERE duplicate_count > 1;
+
+
+SELECT * FROM tip_raw
+INTERSECT
+SELECT * FROM tip_raw;
+
+CREATE TABLE tip_clean AS
+SELECT business_id, user_id, text, date, compliment_count
+FROM (
+    SELECT *,
+           ROW_NUMBER() OVER (
+               PARTITION BY business_id, user_id, text, date, compliment_count
+               ORDER BY business_id
+           ) AS rn
+    FROM tip_raw
+) AS ranked
+WHERE rn = 1;
