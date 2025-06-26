@@ -443,3 +443,59 @@ CROSS JOIN iqr_calc_fans i
 WHERE
     fd.value_col < i.lower_bound
     OR fd.value_col > i.upper_bound;
+________________________________________________________________
+
+WITH base AS (
+    SELECT * FROM user_raw
+),
+outliers AS (
+    SELECT * FROM (
+        -- One block per column
+        SELECT
+            'review_count' AS column_name,
+            user_id,
+            review_count AS value,
+            q1,
+            q3,
+            iqr,
+            lower_bound,
+            upper_bound
+        FROM base, (
+            SELECT
+                PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY review_count) AS q1,
+                PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY review_count) AS q3
+            FROM base WHERE review_count > 0
+        ) AS q,
+        LATERAL (
+            SELECT
+                q1 AS q1,
+                q3 AS q3,
+                (q3 - q1) AS iqr,
+                (q1 - 1.5 * (q3 - q1)) AS lower_bound,
+                (q3 + 1.5 * (q3 - q1)) AS upper_bound
+        ) AS bounds
+        WHERE review_count > bounds.upper_bound OR review_count < bounds.lower_bound
+
+        UNION ALL
+
+        SELECT
+            'useful', user_id, useful, q1, q3, iqr, lower_bound, upper_bound
+        FROM base, (
+            SELECT PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY useful) AS q1,
+                   PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY useful) AS q3
+            FROM base WHERE useful > 0
+        ) AS q,
+        LATERAL (
+            SELECT q1, q3, (q3 - q1) AS iqr,
+                   (q1 - 1.5 * (q3 - q1)) AS lower_bound,
+                   (q3 + 1.5 * (q3 - q1)) AS upper_bound
+        ) AS bounds
+        WHERE useful > bounds.upper_bound OR useful < bounds.lower_bound
+
+        -- Repeat the same block below for the remaining columns
+        -- funny, cool, fans, compliment_hot, compliment_more, ...
+        -- Replace "useful" and "review_count" with the respective column name
+    ) AS all_outliers
+)
+SELECT * FROM outliers
+ORDER BY column_name, value DESC;
