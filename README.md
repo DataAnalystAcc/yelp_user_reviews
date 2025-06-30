@@ -1,6 +1,12 @@
 # User reviews as market signals: What's the next best business opportunity?
 ![image](https://github.com/user-attachments/assets/9f25b774-1a14-4ea2-be1f-d02bf97a65b2)
 
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
+![Made with Jupyter](https://img.shields.io/badge/Made%20with-Jupyter-orange?logo=Jupyter)
+![Database: PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-blue?logo=postgresql)
+![NLP: Hugging Face](https://img.shields.io/badge/NLP-HuggingFace-yellow)
 
 This project analyzes Yelp user reviews to uncover valuable business insights using state-of-the-art NLP techniques.
 It combines BERTopic for topic modeling and RoBERTa for sentiment analysis to identify the most discussed themes and emotional tones in customer feedback.
