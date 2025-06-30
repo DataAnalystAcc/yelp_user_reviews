@@ -34,18 +34,21 @@ https://gamma.app/docs/Yelp-Final-Presentation-2406-z88kyp7qc3xe4x7
 - Connect to the database using your .env file (see .env.example).
 
 ### 🧠 NLP Implementation Overview
+```python
 from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
-from transformers import pipeline
+from transformers import pipeline```
 
 Custom Embedding Model
 We use intfloat/e5-large-v2 from the sentence-transformers library to generate semantic embeddings:
+```python
 embedding_model = SentenceTransformer("intfloat/e5-large-v2")
-topic_model = BERTopic(embedding_model=embedding_model)
+topic_model = BERTopic(embedding_model=embedding_model)```
 
 RoBERTa Sentiment Analysis
 Sentiment classification is performed using the pre-trained cardiffnlp/twitter-roberta-base-sentiment model:
-sentiment = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")
+```python
+sentiment = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")```
 
 🔄 Pipeline Logic
 Sentiment Analysis (RoBERTa):
