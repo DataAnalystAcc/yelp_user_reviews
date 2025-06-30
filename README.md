@@ -73,7 +73,7 @@ Shows how business categories are distributed across the dataset.
 ![image](https://github.com/user-attachments/assets/df9182de-5d39-4bbf-a2de-c986e3e1d93c)
 
 #### 📊 Topic distribution bar charts  
-Top topics extracted via BERTopic with relative frequency.
+Top topics extracted via BERTopic with frequency.
 
 ![image](https://github.com/user-attachments/assets/80e9ddad-b6d8-4575-aed8-5c782a9ee466)
 
