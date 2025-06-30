@@ -1,4 +1,4 @@
-### User reviews as market signals: What's the next best business opportunity?
+## User reviews as market signals: What's the next best business opportunity?
 ![image](https://github.com/user-attachments/assets/9f25b774-1a14-4ea2-be1f-d02bf97a65b2)
 
 
@@ -40,14 +40,14 @@ from sentence_transformers import SentenceTransformer
 from transformers import pipeline
 ```
 
-## Custom Embedding Model
+### Custom Embedding Model
 - We use intfloat/e5-large-v2 from the sentence-transformers library to generate semantic embeddings:
 ```python
 embedding_model = SentenceTransformer("intfloat/e5-large-v2")
 topic_model = BERTopic(embedding_model=embedding_model)
 ```
 
-## RoBERTa Sentiment Analysis
+### RoBERTa Sentiment Analysis
 - Sentiment classification is performed using the pre-trained cardiffnlp/twitter-roberta-base-sentiment model:
 ```python
 sentiment = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")
