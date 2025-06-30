@@ -13,25 +13,25 @@ https://gamma.app/docs/Yelp-Final-Presentation-2406-z88kyp7qc3xe4x7
 
 ### 🎯 Key Goals
 
-Understand what customers talk about most
+- Understand what customers talk about most
 
-Classify reviews by positive or negative sentiment
+- Classify reviews by positive or negative sentiment
 
-Identify top-performing business categories and metro areas
+- Identify top-performing business categories and metro areas
 
-Ideal for exploring how Natural Language Processing (NLP) can drive data-driven decision-making in local businesses.
+- Ideal for exploring how Natural Language Processing (NLP) can drive data-driven decision-making in local businesses.
 
 ### ⚙️ Installation Instructions
 
-Make sure you have Python 3.9+ installed. Then clone the repo and install dependencies:
+- Make sure you have Python 3.9+ installed. Then clone the repo and install dependencies:
 
-pip install -r requirements.txt
+- pip install -r requirements.txt
 
 ### ▶️ Usage (How to Run Code or Notebooks)
 
-Explore the data and modeling in the notebooks/ directory.
+- Explore the data and modeling in the notebooks/ directory.
 
-Connect to the database using your .env file (see .env.example).
+- Connect to the database using your .env file (see .env.example).
 
 ### 🧠 NLP Implementation Overview
 from bertopic import BERTopic
@@ -81,11 +81,9 @@ Visualizations available in the notebooks and final report.
 
 ### 🧰 Infrastructure
 
-Database: AWS RDS (PostgreSQL)
-
-Access Tools: DBeaver for manual SQL queries, SQLAlchemy for Python
-
-Environment Variables: Managed via .env and python-dotenv
+- Database: AWS RDS (PostgreSQL)
+- Access Tools: DBeaver for manual SQL queries, SQLAlchemy for Python
+- Environment Variables: Managed via .env and python-dotenv
 
 ### 👥 Author Info and Contact
 
