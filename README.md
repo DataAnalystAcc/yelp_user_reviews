@@ -101,3 +101,19 @@ Maria Badanova | [LinkedIn](https://www.linkedin.com/in/maria-badanova/)
 
 Maximilian Wels | [LinkedIn](https://www.linkedin.com/in/maximilian-wels-76025810b/)
 
+## 📄 License
+
+This project is released under the MIT License.  
+Please see the [LICENSE](./LICENSE) file for details.
+
+### 🧠 Third-Party Libraries and Models
+
+This project uses several open-source libraries and models, including:
+
+- [BERTopic](https://github.com/MaartenGr/BERTopic) (MIT License)
+- [sentence-transformers](https://github.com/UKPLab/sentence-transformers) (Apache 2.0 License)
+- [transformers (by Hugging Face)](https://github.com/huggingface/transformers) (Apache 2.0 License)
+- [cardiffnlp/twitter-roberta-base-sentiment](https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment) – Model licensed under MIT
+
+Please refer to the respective repositories for full license terms.
+
