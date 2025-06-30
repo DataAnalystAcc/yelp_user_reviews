@@ -1,8 +1,11 @@
-## 📝 User reviews as market signals: What's the next best business opportunity?
+### User reviews as market signals: What's the next best business opportunity?
+![image](https://github.com/user-attachments/assets/9f25b774-1a14-4ea2-be1f-d02bf97a65b2)
 
 
 This project analyzes Yelp user reviews to uncover valuable business insights using state-of-the-art NLP techniques.
 It combines BERTopic for topic modeling and RoBERTa for sentiment analysis to identify the most discussed themes and emotional tones in customer feedback.
+
+![image](https://github.com/user-attachments/assets/807706a1-17ac-436f-937b-e652469dabf8)
 
 ### 🔗 View the Presentation here:
 
@@ -45,11 +48,21 @@ sentiment = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-bas
 
 ### 📊 Example Results
 
+Category distribution tree map
+
+![image](https://github.com/user-attachments/assets/df9182de-5d39-4bbf-a2de-c986e3e1d93c)
+
 Topic distribution bar charts
+
+![image](https://github.com/user-attachments/assets/80e9ddad-b6d8-4575-aed8-5c782a9ee466)
+
+Top business opportunities by key category
+
+![image](https://github.com/user-attachments/assets/0d34626f-ca15-44c0-a503-c6d8457d944f)
 
 Positive vs. negative sentiment by metro area
 
-Top business opportunities by key category
+![image](https://github.com/user-attachments/assets/e0bb2856-f299-4953-88a3-ecc94e269647)
 
 Visualizations available in the notebooks and final report.
 
