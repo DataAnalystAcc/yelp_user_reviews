@@ -40,15 +40,15 @@ from sentence_transformers import SentenceTransformer
 from transformers import pipeline
 ```
 
-Custom Embedding Model
-We use intfloat/e5-large-v2 from the sentence-transformers library to generate semantic embeddings:
+## Custom Embedding Model
+- We use intfloat/e5-large-v2 from the sentence-transformers library to generate semantic embeddings:
 ```python
 embedding_model = SentenceTransformer("intfloat/e5-large-v2")
 topic_model = BERTopic(embedding_model=embedding_model)
 ```
 
-RoBERTa Sentiment Analysis
-Sentiment classification is performed using the pre-trained cardiffnlp/twitter-roberta-base-sentiment model:
+## RoBERTa Sentiment Analysis
+- Sentiment classification is performed using the pre-trained cardiffnlp/twitter-roberta-base-sentiment model:
 ```python
 sentiment = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")
 ```
