@@ -1,4 +1,4 @@
-## User reviews as market signals: What's the next best business opportunity?
+# User reviews as market signals: What's the next best business opportunity?
 ![image](https://github.com/user-attachments/assets/9f25b774-1a14-4ea2-be1f-d02bf97a65b2)
 
 
