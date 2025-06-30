@@ -67,23 +67,27 @@ Topic Modeling (BERTopic):
 
 ### 📊 Example Results
 
-Category distribution tree map
+#### 📂 Category distribution tree map  
+Shows how business categories are distributed across the dataset.
 
 ![image](https://github.com/user-attachments/assets/df9182de-5d39-4bbf-a2de-c986e3e1d93c)
 
-Topic distribution bar charts
+#### 📊 Topic distribution bar charts  
+Top topics extracted via BERTopic with relative frequency.
 
 ![image](https://github.com/user-attachments/assets/80e9ddad-b6d8-4575-aed8-5c782a9ee466)
 
-Top business opportunities by key category
+#### 💼 Top business opportunities by key category  
+Categories with high sentiment and low competition across metro areas.
 
 ![image](https://github.com/user-attachments/assets/0d34626f-ca15-44c0-a503-c6d8457d944f)
 
-Positive vs. negative sentiment by metro area
+#### 🏙️ Positive vs. negative sentiment by metro area  
+Geospatial sentiment mapping across cities based on review analysis.
 
 ![image](https://github.com/user-attachments/assets/e0bb2856-f299-4953-88a3-ecc94e269647)
 
-Visualizations available in the notebooks and final report.
+📝 All visualizations are available in the project notebooks and final presentation.
 
 ### 🧰 Infrastructure
 
