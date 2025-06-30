@@ -33,18 +33,31 @@ Explore the data and modeling in the notebooks/ directory.
 
 Connect to the database using your .env file (see .env.example).
 
-Example entry point:
-
+### 🧠 NLP Implementation Overview
 from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
 from transformers import pipeline
 
-Load custom embedding model
+Custom Embedding Model
+We use intfloat/e5-large-v2 from the sentence-transformers library to generate semantic embeddings:
 embedding_model = SentenceTransformer("intfloat/e5-large-v2")
 topic_model = BERTopic(embedding_model=embedding_model)
 
-Load sentiment analysis pipeline
+RoBERTa Sentiment Analysis
+Sentiment classification is performed using the pre-trained cardiffnlp/twitter-roberta-base-sentiment model:
 sentiment = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")
+
+🔄 Pipeline Logic
+Sentiment Analysis (RoBERTa):
+- Each review is classified as positive, neutral, or negative
+- Long reviews (>512 tokens) are split into chunks before classification
+- A random sample of reviews is used for scalable processing
+
+Topic Modeling (BERTopic):
+- Performed on a stratified sample to preserve niche topics
+- Custom stop words list used to improve semantic quality
+- Topics built with a minimum of 50 documents per cluster
+- Results filtered to retain only the most meaningful and distinct topics
 
 ### 📊 Example Results
 
