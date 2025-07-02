@@ -57,17 +57,23 @@ topic_model = BERTopic(embedding_model=embedding_model)
 ```python
 sentiment = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")
 ```
-🔄 Pipeline Logic
-💡 Sentiment Analysis (RoBERTa)
-- Each review is classified as positive, neutral, or negative
-- Long reviews (>512 tokens) are split into chunks before classification
-- A random sample of reviews is used for scalable processing
+### 🔄 Pipeline Logic
 
-🗂️ Topic Modeling (BERTopic)
-- Performed on a stratified sample to preserve niche topics
-- Uses a custom stop word list to improve semantic clarity
-- Topics are built with a minimum of 50 documents per cluster
-- Final results are filtered to retain only meaningful, distinct topics
+---
+
+### 💡 Sentiment Analysis (RoBERTa)
+- Each review is classified as **positive**, **neutral**, or **negative**  
+- Long reviews (>512 tokens) are **split into chunks** before classification  
+- A **random sample** of reviews is used for scalable processing  
+
+---
+
+### 🗂️ Topic Modeling (BERTopic)
+- Performed on a **stratified sample** to preserve niche topics  
+- Uses a **custom stop word list** to improve semantic clarity  
+- Topics are built with a **minimum of 50 documents per cluster**  
+- Final results are **filtered** to retain only meaningful, distinct topics  
+
 
 ### 📊 Example Results
 
