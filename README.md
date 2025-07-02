@@ -72,22 +72,22 @@ Topic Modeling (BERTopic):
 
 ### 📊 Example Results
 
-#### 📂 Category distribution tree map  
+### 📂 Category distribution tree map  
 Shows how business categories are distributed across the dataset.
 
 ![image](https://github.com/user-attachments/assets/df9182de-5d39-4bbf-a2de-c986e3e1d93c)
 
-#### 📊 Topic distribution bar charts  
+### 📊 Topic distribution bar charts  
 Top topics extracted via BERTopic with frequency.
 
 ![image](https://github.com/user-attachments/assets/80e9ddad-b6d8-4575-aed8-5c782a9ee466)
 
-#### 💼 Top business opportunities by key category  
+### 💼 Top business opportunities by key category  
 Distribution of Categories within high sentiment metro areas.
 
 ![image](https://github.com/user-attachments/assets/0d34626f-ca15-44c0-a503-c6d8457d944f)
 
-#### 🏙️ Positive sentiment by metro area  
+### 🏙️ Positive sentiment by metro area  
 Topic sentiment mapping across cities based on review analysis.
 
 ![image](https://github.com/user-attachments/assets/e0bb2856-f299-4953-88a3-ecc94e269647)
@@ -106,7 +106,7 @@ Maria Badanova | [LinkedIn](https://www.linkedin.com/in/maria-badanova/)
 
 Maximilian Wels | [LinkedIn](https://www.linkedin.com/in/maximilian-wels-76025810b/)
 
-## 📄 License
+### 📄 License
 
 This project is released under the MIT License.  
 Please see the [LICENSE](./LICENSE) file for details.
