@@ -59,7 +59,7 @@ sentiment = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-bas
 ```
 
 🔄 Pipeline Logic
-💡 Sentiment Analysis (RoBERTa):
+💡 Sentiment Analysis (RoBERTa)
 - Each review is classified as positive, neutral, or negative
 - Long reviews (>512 tokens) are split into chunks before classification
 - A random sample of reviews is used for scalable processing
